@@ -30,7 +30,7 @@ public class StandingsPage {
         //I have prefered to do this loop instead of an Xpath tha anyways might return more than one element
         //And to avoid using the easiest one -> linkText
         for(WebElement element: elements) {
-            if (element.getText() == region) {
+            if (element.getText().equals(region)) {
                 elementToClick = element;
             }
         }
