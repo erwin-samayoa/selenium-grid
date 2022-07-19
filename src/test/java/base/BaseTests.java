@@ -7,6 +7,10 @@ import org.testng.annotations.BeforeTest;
 import pages.StandingsPage;
 import utils.LanguageOptions;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 public class BaseTests {
     private WebDriver driver;
     protected StandingsPage homePage;
@@ -18,6 +22,9 @@ public class BaseTests {
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(1));
+
         homePage = new StandingsPage(driver);
         languageOptions = new LanguageOptions(driver);
 
