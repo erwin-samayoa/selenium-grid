@@ -2,31 +2,41 @@ package standings;
 
 import base.BaseTests;
 import org.testng.annotations.Test;
-import utils.LanguageOptions;
 
 import static org.testng.Assert.assertEquals;
 
 public class StandingsTests extends BaseTests {
 
-    @Test
-    public void testChangeLanguageToEN() {
-        homePage.load();
-        languageOptions.selectLanguage("en-US");
-        assertEquals(languageOptions.getCurrentLanguage(),"en-US");
+
+    public void changeLanguageToEN() {
+        //waitSeconds(10);
+        homePage.get().load();
+        waitSeconds(10);
+        languageOptions.get().selectLanguage("en-US");
+        waitSeconds(20);
+        assertEquals(languageOptions.get().getCurrentLanguage(),"en-US");
     }
 
     @Test
     public void testSelectLCS() {
         //homePage.load();
-        homePage.clickRegion("LCS");
-        assertEquals(homePage.getFirstPosition(),"Evil Geniuses");
+        setUp(); //tearDown is called in error management
+        changeLanguageToEN();
+        homePage.get().clickRegion("LCS");
+        waitSeconds(10);
+        assertEquals(homePage.get().getFirstPosition(),"Evil Geniuses");
+        //tearDown();
     }
 
     @Test
     public void testSelectCBLOL() {
         //homePage.load();
-        homePage.clickRegion("CBLOL");
-        assertEquals(homePage.getFirstPosition(),"FURIA");
+        setUp(); //tearDown is called in error management also
+        changeLanguageToEN();
+        homePage.get().clickRegion("CBLOL");
+        waitSeconds(10);
+        assertEquals(homePage.get().getFirstPosition(),"FURIA");
+        //tearDown();
     }
 
 

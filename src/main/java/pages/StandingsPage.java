@@ -7,24 +7,27 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class StandingsPage {
-    WebDriver driver;
+    private final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     By regionBarsElement = By.cssSelector("div.label div.name");
     By firstPositionElement = By.cssSelector("a.ranking:nth-child(2) div.name");
 
     public StandingsPage(WebDriver driver) {
-        this.driver = driver;
+        this.driver.set(driver);
     }
 
     public void load() {
 
+        System.out.println("Loading page " + this.getClass().getName());
         //driver.get("https://lolesports.com/standings");
-        driver.get("https://lolesports.com/standings/lcs/lcs_summer_2022/regular_season");
+
+        driver.get().get("https://lolesports.com/standings/lcs/lcs_summer_2022/regular_season");
 
     }
 
     public void clickRegion(String region) {
-        List<WebElement> elements = driver.findElements(regionBarsElement);
+        System.out.println("Clicking region " + region);
+        List<WebElement> elements = driver.get().findElements(regionBarsElement);
         WebElement elementToClick = null;
         //Looking for the element with the content
         //I have prefered to do this loop instead of an Xpath tha anyways might return more than one element
@@ -37,11 +40,17 @@ public class StandingsPage {
 
         //If located
         if (elementToClick != null) {
-            elementToClick.click();
+            try {
+                elementToClick.click();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     public String getFirstPosition() {
-        return driver.findElement(firstPositionElement).getText();
+
+        System.out.println("Getting first position");
+        return driver.get().findElement(firstPositionElement).getText();
     }
 }
