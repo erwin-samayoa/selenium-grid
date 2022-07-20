@@ -11,9 +11,9 @@ public class StandingsTests extends BaseTests {
     public void changeLanguageToEN() {
         //waitSeconds(10);
         homePage.get().load();
-        waitSeconds(10);
+        waitSeconds(1);
         languageOptions.get().selectLanguage("en-US");
-        waitSeconds(20);
+        waitSeconds(2);
         assertEquals(languageOptions.get().getCurrentLanguage(),"en-US");
     }
 
@@ -23,9 +23,9 @@ public class StandingsTests extends BaseTests {
         setUp(); //tearDown is called in error management
         changeLanguageToEN();
         homePage.get().clickRegion("LCS");
-        waitSeconds(10);
+        waitSeconds(1);
         assertEquals(homePage.get().getFirstPosition(),"Evil Geniuses");
-        //tearDown();
+        tearDown();
     }
 
     @Test
@@ -34,9 +34,20 @@ public class StandingsTests extends BaseTests {
         setUp(); //tearDown is called in error management also
         changeLanguageToEN();
         homePage.get().clickRegion("CBLOL");
-        waitSeconds(10);
+        waitSeconds(1);
         assertEquals(homePage.get().getFirstPosition(),"FURIA");
-        //tearDown();
+        tearDown();
+    }
+
+    @Test
+    public void testSelectLCK() {
+        //homePage.load();
+        setUp(); //tearDown is called in error management also
+        changeLanguageToEN();
+        homePage.get().clickRegion("LCK");
+        waitSeconds(1);
+        assertEquals(homePage.get().getFirstPosition(),"Gen.G");
+        tearDown();
     }
 
 
