@@ -27,17 +27,31 @@ import java.util.concurrent.TimeUnit;
 
 public class BaseTests {
     //private WebDriver driver;
+    //It seems the base test class requires ThreadLocal properties
+    //These are made somehow paralel because of method paralell testing
+    //However Page Object Model doesnt seems to require to be Thread Safe
+    // as long as their instances are? So test classes might need to be thread safe
     private ThreadLocal<RemoteWebDriver> driver = new ThreadLocal<>();
-    private final String scope = "local";
     protected ThreadLocal<StandingsPage> homePage = new ThreadLocal<>();
     protected ThreadLocal<LanguageOptions> languageOptions = new ThreadLocal<>();
 
+    private final String scope = "remote"; //local or remote (grid)
+    private final String browser = "firefox"; //chrome or firefox (grid)
+
     public ChromeOptions getChromeOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
-        //chromeOptions.addArguments("--start-maximized");
+        //chromeOptions.addArguments("--start-maximized"); //This doesnt work on headless because is pointless having no screen
         chromeOptions.addArguments("--window-size=1366x768");
         chromeOptions.setHeadless(true);
         return chromeOptions;
+    }
+
+    public FirefoxOptions getFirefoxOptions() {
+        FirefoxOptions fireFoxOptions = new FirefoxOptions();
+        //chromeOptions.addArguments("--start-maximized"); //This doesnt work on headless because is pointless having no screen
+        fireFoxOptions.addArguments("--window-size=1366x768");
+        fireFoxOptions.setHeadless(true);
+        return fireFoxOptions;
     }
 
     //@BeforeTest
@@ -46,28 +60,31 @@ public class BaseTests {
         if (scope == "local") {
             System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
             driver.set(new ChromeDriver(getChromeOptions()));
-            //driver.get().manage().window().maximize();
         } else {
-            var chromeOptions = new ChromeOptions();
-            var firefoxOptions = new FirefoxOptions();
-            chromeOptions.addArguments("--start-maximized");
             try {
-                driver.set(new RemoteWebDriver(new URL("http://192.168.215.10:4444/wd/hub"),chromeOptions));
+                switch (browser) {
+                    case "firefox":
+                        driver.set(new RemoteWebDriver(new URL("http://192.168.215.10:4444/wd/hub"),getFirefoxOptions()));
+                        break;
+                    case "chrome":
+                    default:
+                        driver.set(new RemoteWebDriver(new URL("http://192.168.215.10:4444/wd/hub"),getChromeOptions()));
+                        break;
+
+                }
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-
         }
 
-
-        driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        //Timers might need to be adjusted based on local and remote (grid) machine
+        driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.get().manage().timeouts().pageLoadTimeout(Duration.ofMinutes(2));
-
-
 
         homePage.set(new StandingsPage(driver.get()));
         languageOptions.set(new LanguageOptions(driver.get()));
-        waitSeconds(5);
+        waitSeconds(1);
 
     }
 

@@ -1,0 +1,37 @@
+version: "3"
+services: 
+
+  selenium-hub:
+    image: selenium/hub:3.141.59-20210607
+    ports: 
+      - "4444:4444"
+    environment:
+        GRID_MAX_SESSION: 16
+        GRID_BROWSER_TIMEOUT: 300
+        GRID_TIMEOUT: 300
+  chrome:
+    image: selenium/node-chrome:3.141.59-20210607
+    depends_on:
+      - selenium-hub
+    environment:
+      #HUB_PORT_4444_TCP_ADDR: selenium-hub
+      #HUB_PORT_4444_TCP_PORT: 4444
+      HUB_HOST: selenium-hub
+      HUB_PORT: 4444
+      #I dont know why it doesnt work in my VM with 2 (not sure which of the two following lines)
+      #maybe something around shm
+      #it works this way better at start with parameter --scale chrome=X number of containers
+      NODE_MAX_SESSION: 1
+      NODE_MAX_INSTANCES: 1 
+
+  firefox:
+    image: selenium/node-firefox:3.141.59-20210607
+    depends_on:
+      - selenium-hub
+    environment:
+      #HUB_PORT_4444_TCP_ADDR: selenium-hub
+      #HUB_PORT_4444_TCP_PORT: 4444
+      HUB_HOST: selenium-hub
+      HUB_PORT: 4444
+      NODE_MAX_SESSION: 4
+      NODE_MAX_INSTANCES: 4
