@@ -1,19 +1,21 @@
 package pages;
 
+import base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class StandingsPage {
-    private final WebDriver driver;
+public class StandingsPage extends BasePage {
+    //private final WebDriver driver;
 
     By regionBarsElement = By.cssSelector("div.label div.name");
     By firstPositionElement = By.cssSelector("a.ranking:nth-child(2) div.name");
 
     public StandingsPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+        //this.driver = driver;
     }
 
     public void load() {
@@ -27,6 +29,7 @@ public class StandingsPage {
 
     public void clickRegion(String region) {
         System.out.println("Clicking region " + region);
+        /*
         List<WebElement> elements = driver.findElements(regionBarsElement);
         WebElement elementToClick = null;
         //Looking for the element with the content
@@ -38,6 +41,8 @@ public class StandingsPage {
             }
         }
 
+
+
         //If located
         if (elementToClick != null) {
             try {
@@ -46,11 +51,14 @@ public class StandingsPage {
                 System.out.println(e.getMessage());
             }
         }
+
+         */
+        clickElement(regionBarsElement,region);
     }
 
     public String getFirstPosition() {
 
         System.out.println("Getting first position");
-        return driver.findElement(firstPositionElement).getText();
+        return getTextFromElement(firstPositionElement);
     }
 }

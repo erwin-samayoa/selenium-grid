@@ -29,24 +29,24 @@ public class StandingsTests extends BaseTests {
     }
 
     @Test
-    public void testSelectCBLOL() {
+    public void testSelectLcsAcademy() {
         //homePage.load();
         setUp(); //tearDown is called in error management also
         changeLanguageToEN();
-        homePage.get().clickRegion("CBLOL");
+        homePage.get().clickRegion("LCS Academy");
         waitSeconds(1);
-        assertEquals(homePage.get().getFirstPosition(),"FURIA");
+        assertEquals(homePage.get().getFirstPosition(),"TL Academy");
         tearDown();
     }
 
     @Test
-    public void testSelectLCK() {
+    public void testSelectLCL() {
         //homePage.load();
         setUp(); //tearDown is called in error management also
         changeLanguageToEN();
-        homePage.get().clickRegion("LCK");
+        homePage.get().clickRegion("LCL");
         waitSeconds(1);
-        assertEquals(homePage.get().getFirstPosition(),"Gen.G");
+        assertEquals(homePage.get().getFirstPosition(),"Team Spirit");
         tearDown();
     }
 
