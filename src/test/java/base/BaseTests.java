@@ -35,8 +35,22 @@ public class BaseTests {
     protected ThreadLocal<StandingsPage> homePage = new ThreadLocal<>();
     protected ThreadLocal<LanguageOptions> languageOptions = new ThreadLocal<>();
 
+    /*
+    //Moved to constructor (parameters)
     private final String scope = "remote"; //local or remote (grid)
     private final String browser = "firefox"; //chrome or firefox (grid)
+
+     */
+
+    private final String scope; //local or remote (grid)
+    private final String browser; //chrome or firefox (grid)
+
+    public BaseTests() {
+        scope = System.getProperty("scope");
+        browser = System.getProperty("browser");
+        
+
+    }
 
     public ChromeOptions getChromeOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
